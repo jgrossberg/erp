@@ -1,4 +1,3 @@
-node_modules
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -279,8 +278,6 @@ pip-selfcheck.json
 
 
 ### Project template
-
-realestarter/media/
 
 .pytest_cache/
 
