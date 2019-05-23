@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import { Form, Input, Select, Button} from 'antd';
 
@@ -11,11 +12,25 @@ const FormItem = Form.Item;
 class CustomForm extends React.Component {
 
 
-  entryInputRow(props) {
-    // console.log('got this as props: ')
-    // console.log(props)
+  state = {
+      availableAccounts: {},
+  } 
 
-    const options = Array.from(props.data).map(function(item) {
+  componentWillMount() {
+      axios.get(`http://127.0.0.1:8000/accounts/`)
+          .then(res=> {
+              this.setState({
+                  availableAccounts: res.data,
+              })
+          })
+          .catch(error => {
+              console.log(error)
+          });
+  }
+  
+  entryInputRow(props) {
+    
+    const options = Array.from(props).map(function(item) {
       return (
         <Option key={item.account_number}
           size="small"
@@ -35,6 +50,7 @@ class CustomForm extends React.Component {
         >  
           <Select 
             size="small"
+            className="account_select"
             defaultValue="Account" 
             style={{ width: '60%' }}
             id="account">
@@ -60,7 +76,7 @@ class CustomForm extends React.Component {
   handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    let selectorElements = document.querySelectorAll('div.ant-select-selection-selected-value')
+    let selectorElements = document.getElementsByClassName('account_select')
     let inputAccounts = []
     for (let el of selectorElements) {
       inputAccounts.push(el.textContent)
@@ -78,6 +94,8 @@ class CustomForm extends React.Component {
       inputCredits.push(el.value)
     }  
     
+
+    // TODO: Validate inpuits and submit POST request
     console.log(inputAccounts)
     console.log(inputDebits)
     console.log(inputCredits)
@@ -86,7 +104,7 @@ class CustomForm extends React.Component {
 
 
   render () {
-    // console.log(this.props)
+    console.log(this.state)
     return (
       <div style={{ 
         background: '#fff',
@@ -99,10 +117,12 @@ class CustomForm extends React.Component {
         <Form 
           onSubmit={this.handleFormSubmit}>
           
-          {this.entryInputRow(this.props)}
-          {this.entryInputRow(this.props)}
-          {this.entryInputRow(this.props)}
-          {this.entryInputRow(this.props)}
+          {this.entryInputRow(this.state.availableAccounts)}
+          {this.entryInputRow(this.state.availableAccounts)}
+          {this.entryInputRow(this.state.availableAccounts)}
+          {this.entryInputRow(this.state.availableAccounts)}
+
+
           <br /> 
           <br /> 
           <br /> 
