@@ -12,6 +12,9 @@ class CustomForm extends React.Component {
 
 
   entryInputRow(props) {
+    // console.log('got this as props: ')
+    // console.log(props)
+
     const options = Array.from(props.data).map(function(item) {
       return (
         <Option key={item.account_number}
@@ -36,17 +39,16 @@ class CustomForm extends React.Component {
             style={{ width: '60%' }}
             id="account">
             { options }
-            {/* { this.optionsArray(props) } */}
           </Select>
           <Input 
             size="small"
-            id ="amount_debit" 
-            defaultValue="-" 
+            className="amount_debit" 
+            defaultValue="" 
             style={{ width: '20%' }}/>
           <Input 
             size="small"
-            id ="amount_credit" 
-            defaultValue="-" 
+            className ="amount_credit" 
+            defaultValue="" 
             style={{ width: '20%' }}/>
         </InputGroup>  
 
@@ -55,22 +57,36 @@ class CustomForm extends React.Component {
   }
 
 
-
-
   handleFormSubmit = async (event) => {
     event.preventDefault();
-    // var elEntryAccount  = document.getElementById('account').textContent;
-    // var elEntryAmount  = document.getElementById('amount');
 
-    console.log(event.target.elements)
-    // console.log(elEntryAccount)
-    // console.log(elEntryAmount.value)
+    let selectorElements = document.querySelectorAll('div.ant-select-selection-selected-value')
+    let inputAccounts = []
+    for (let el of selectorElements) {
+      inputAccounts.push(el.textContent)
+    }  
     
+    let debitElements = document.getElementsByClassName('amount_debit')
+    let inputDebits = []
+    for (let el of debitElements) {
+      inputDebits.push(el.value)
+    }  
+
+    let creditElements = document.getElementsByClassName('amount_credit')
+    let inputCredits = []
+    for (let el of creditElements) {
+      inputCredits.push(el.value)
+    }  
+    
+    console.log(inputAccounts)
+    console.log(inputDebits)
+    console.log(inputCredits)
+
   }
 
-  render () {
 
-    
+  render () {
+    // console.log(this.props)
     return (
       <div style={{ 
         background: '#fff',
@@ -80,10 +96,7 @@ class CustomForm extends React.Component {
         marginLeft: 'auto', 
         marginRight: 'auto' }}
       >
-
-      {/* {this.entryForm} */}
         <Form 
-          // style = {{ marginBottom: '0px' }}
           onSubmit={this.handleFormSubmit}>
           
           {this.entryInputRow(this.props)}
@@ -101,9 +114,9 @@ class CustomForm extends React.Component {
 
       </div>
     )
-
   }
 }
+
 export default CustomForm
 
 

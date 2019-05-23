@@ -6,9 +6,13 @@ import JournalEntryForm from '../components/JournalEntryForm';
 
 class JournalEntry extends React.Component {
 
+
+
     state = {
         accounts: {},
     } 
+
+    
 
     componentWillMount() {
         axios.get(`http://127.0.0.1:8000/accounts/`)
@@ -16,6 +20,9 @@ class JournalEntry extends React.Component {
                 this.setState({
                     accounts: res.data,
                 });
+                this.availableAccounts = res.data;
+                console.log('sending this into props:')
+                console.log(this.availableAccounts)
             })
             .catch(error => {
                 console.log(error)
@@ -23,10 +30,14 @@ class JournalEntry extends React.Component {
     }
    
     render () {
+
+        console.log(this.availableAccounts)
+        console.log('was it good? ^^')
         return (
 
             <div>
                 <JournalEntryForm data={this.state.accounts}/>
+                {/* <JournalEntryForm data={this.availableAccounts}/> */}
             </div>
 
         )
