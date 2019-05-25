@@ -8,6 +8,7 @@ class AccountList extends React.Component {
     }
 
 
+
     componentWillMount() {
         axios.get(`http://127.0.0.1:8000/accounts/`)
             .then(res=> {
@@ -19,18 +20,66 @@ class AccountList extends React.Component {
                 console.log(error)
             });
     }
-   
+    renderTableRow = () => {
+        // const {accountName}  = this.props.accountName
+        return (
+            <tr>
+                <td>1000</td>
+                <td>
+                    Cash
+                </td>
+                <td>$0.00</td>
+                <td>2018-05-04</td>
+            </tr>
+        )
+    }
+    renderTable = () => {
+        return (       
+            <table className="account-listing">
+            <thead>
+                <tr>
+                    <th>Account Number</th>
+                    <th>Account Name</th>
+                    <th>Current Balance</th>
+                    <th>Last Hit On</th>
+                </tr>
+            </thead>
+            <tbody>
+                {this.renderTableRow()}
+                <tr>
+                    <td>1000</td>
+                    <td>
+                        Cash
+                    </td>
+                    <td>$0.00</td>
+                    <td>2018-10-25</td>
+                </tr>
+                <tr>
+                    <td>1100</td>
+                    <td>
+                        Accounts Receivable
+                    </td>
+                    <td>$0.00</td>
+                    <td>2018-10-25</td>
+                </tr>
+
+
+            </tbody>
+
+        </table>
+        )
+    }
+
+
+
+
+
     render() {
         return (
             <div>
-            <ul className="">
-                <li className="account-list-item">1001</li>
-                <li className="account-list-item">1010</li>
-                <li className="account-list-item">2000</li>
-                <li className="account-list-item">3000</li>
-                <li className="account-list-item">4000</li>
-            </ul>
-        </div>
+                {this.renderTable()}
+                <button type="button">+1</button>&nbsp;
+            </div>
         )
     }
 }

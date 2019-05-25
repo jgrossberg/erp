@@ -49,19 +49,12 @@ class CustomForm extends React.Component {
     event.preventDefault();
     
     let inputAccounts = []
-    for (let el of this.selectorElements) {
-      inputAccounts.push(el.value)
-    }  
-
     let inputDebits = []
-    for (let el of this.debitElements) {
-      inputDebits.push(Number(el.value))
-    }  
-
     let inputCredits = []
-    for (let el of this.creditElements) {
-      inputCredits.push(Number(el.value))
-    }  
+
+    for (let el of this.selectorElements) { inputAccounts.push(el.value) }  
+    for (let el of this.debitElements) { inputDebits.push(Number(el.value)) }  
+    for (let el of this.creditElements) { inputCredits.push(Number(el.value)) }  
     
     function getSum(total, num) {
       return total + num;
@@ -71,9 +64,8 @@ class CustomForm extends React.Component {
     var sumCredits = inputCredits.reduce(getSum)
     
     if (sumDebits !== sumCredits) {
-      console.log('I know theyre diff and im about to update state')
       this.setState({
-        err: 'Oh honey, debits must equal credits'
+        err: 'Debits and credits must net to $0.00'
       })
     } else {
         this.setState({
