@@ -42,7 +42,6 @@ class CustomForm extends React.Component {
 
     // Load state with current numbers
     this.collectEntries(event);
-    this.errorCheck(event);
 
   }
 
@@ -68,6 +67,19 @@ class CustomForm extends React.Component {
       return total + num;
     }
 
+    var sumDebits = inputDebits.reduce(getSum)
+    var sumCredits = inputCredits.reduce(getSum)
+    
+    if (sumDebits !== sumCredits) {
+      console.log('I know theyre diff and im about to update state')
+      this.setState({
+        err: 'Oh honey, debits must equal credits'
+      })
+    } else {
+        this.setState({
+          err: ''
+        })
+    }
     this.setState({
       entry: {
         'accounts' : inputAccounts,
@@ -90,7 +102,7 @@ class CustomForm extends React.Component {
         this.setState({
           err: ''
         })
-      }
+    }
   }
 
 
@@ -127,8 +139,8 @@ class CustomForm extends React.Component {
               {options}
             </select>
         </td>
-        <td><input className="amount-debit" onBlur={this.handleChange}/></td>
-        <td><input className="amount-credit" onBlur={this.handleChange}/></td>
+        <td><input className="amount-debit" /></td>
+        <td><input className="amount-credit" /></td>
       </tr>
     )
   }
@@ -171,7 +183,7 @@ class CustomForm extends React.Component {
   render () {
     return (
 
-      <form id="journalEntryForm">
+      <form onBlur={this.handleChange} id="journalEntryForm">
           <table className="table">
               <thead>
                   <tr>
