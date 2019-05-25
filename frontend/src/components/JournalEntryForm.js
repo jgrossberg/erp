@@ -15,6 +15,7 @@ class CustomForm extends React.Component {
       err: '',
       sumDebits: 0,
       sumCredits: 0,
+      nRows: 2,
   } 
 
   selectorElements = document.getElementsByClassName('account-select')
@@ -197,6 +198,7 @@ class CustomForm extends React.Component {
           </table>
           {/* <br/> */}
           <p>{this.state.err}&nbsp;</p>
+          <button type="button" onClick={this.addRow}>+1</button>&nbsp;
           <button type="submit" onClick={this.handleFormSubmit}>Submit</button>
       </form>
 
