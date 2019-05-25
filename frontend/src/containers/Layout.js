@@ -1,30 +1,27 @@
 import React from 'react';
-import { Layout, } from 'antd';
 
-const { Header, Content, Footer } = Layout;
+import CustomHeader from '../components/Header';
+
 
 
 const CustomLayout = (props) => {
     return (
-        <Layout className="layout">
+        <div>
 
-        <Header />
+            <CustomHeader />            
 
-        <Content style={{ padding: '0 50px', textAlign: 'center' }}>
+            <div>
 
-            <p style={{ margin: '16px 0' }}>&nbsp;</p>
-            <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-            {props.children}
+                <div style={{ padding: '0 50px', textAlign: 'center' }}>
+                    {props.children}
+
+                </div>
+                    
             </div>
 
 
-        </Content>
+        </div>
 
-        <Footer style={{ textAlign: 'center' }}>
-            Jonah Grossberg
-        </Footer>
-        
-        </Layout>
-    )
+    );
 }
  export default CustomLayout

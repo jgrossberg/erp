@@ -1,20 +1,27 @@
 import React from 'react';
 import axios from 'axios';
 
-import { Form, Input, Select, Button} from 'antd';
-
-const Option = Select.Option;
-const InputGroup = Input.Group;
-const FormItem = Form.Item;
-
-
 
 class CustomForm extends React.Component {
 
 
   state = {
       availableAccounts: {},
+      entry: {
+        accounts: ['',''],
+        debits: [0,0],
+        credits: [0,0]
+      },
+      err: '',
+      sumDebits: 0,
+      sumCredits: 0,
   } 
+
+  selectorElements = document.getElementsByClassName('account-select')
+  debitElements = document.getElementsByClassName('amount-debit')
+  creditElements = document.getElementsByClassName('amount-credit')
+
+
 
   componentWillMount() {
       axios.get(`http://127.0.0.1:8000/accounts/`)
@@ -27,68 +34,124 @@ class CustomForm extends React.Component {
               console.log(error)
           });
   }
-  
+ 
+
+  handleChange = (event) => {
+    event.preventDefault();
+
+    // Load state with current numbers
+    this.collectEntries(event);
+    this.errorCheck(event);
+
+  }
+
+  collectEntries = (event) => {
+    event.preventDefault();
+    
+    let inputAccounts = []
+    for (let el of this.selectorElements) {
+      inputAccounts.push(el.value)
+    }  
+
+    let inputDebits = []
+    for (let el of this.debitElements) {
+      inputDebits.push(Number(el.value))
+    }  
+
+    let inputCredits = []
+    for (let el of this.creditElements) {
+      inputCredits.push(Number(el.value))
+    }  
+    
+    function getSum(total, num) {
+      return total + num;
+    }
+
+    this.setState({
+      entry: {
+        'accounts' : inputAccounts,
+        'debits' : inputDebits,
+        'credits' : inputCredits
+      },
+      sumDebits : inputDebits.reduce(getSum),
+      sumCredits : inputCredits.reduce(getSum)
+
+    });
+  }
+
+  errorCheck = (event) => {
+    event.preventDefault();
+    if (this.state.sumDebits !== this.state.sumCredits) {
+      this.setState({
+        err: 'Oh honey, debits must equal credits'
+      }, () => { console.log('updating state')})
+    } else {
+        this.setState({
+          err: ''
+        })
+      }
+  }
+
+
+  validateForm = (event) => {
+    event.preventDefault()
+    this.collectEntries(event)
+
+    // function getSum(total, num) {
+    //   return total + num;
+    // }
+    console.log("debits")
+    console.log(this.state.entry.debits)
+    // console.log(this.state.entry.debits).reduce(getSum)
+    console.log("credits")
+    console.log(this.state.entry.credits)
+    // console.log(this.state.entry.credits).reduce(getSum)
+}
+
   entryInputRow(props) {
     
     const options = Array.from(props).map(function(item) {
       return (
-        <Option key={item.account_number}
-          size="small"
+        <option key={item.account_number}
         >
           {item.account_number} - {item.account_name}
-        </Option>
+        </option>
       );
     });
     return (
-      <FormItem
-        style = {{
-          marginBottom: "-17px"
-        }}
-      >
-        <InputGroup 
-          compact
-        >  
-          <Select 
-            size="small"
-            className="account_select"
-            defaultValue="Account" 
-            style={{ width: '60%' }}
-            id="account">
-            { options }
-          </Select>
-          <Input 
-            size="small"
-            className="amount_debit" 
-            defaultValue="" 
-            style={{ width: '20%' }}/>
-          <Input 
-            size="small"
-            className ="amount_credit" 
-            defaultValue="" 
-            style={{ width: '20%' }}/>
-        </InputGroup>  
-
-      </FormItem>
+      <tr>
+        <th scope="row">1</th>
+        <td>
+            <select className="account-select">
+              {options}
+            </select>
+        </td>
+        <td><input className="amount-debit" onBlur={this.handleChange}/></td>
+        <td><input className="amount-credit" onBlur={this.handleChange}/></td>
+      </tr>
     )
   }
+
 
 
   handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    let selectorElements = document.getElementsByClassName('account_select')
+    let selectorElements = document.getElementsByClassName('account-select')
+    // console.log(selectorElements)
+ 
     let inputAccounts = []
     for (let el of selectorElements) {
-      inputAccounts.push(el.textContent)
+      inputAccounts.push(el.value)
     }  
     
-    let debitElements = document.getElementsByClassName('amount_debit')
+    let debitElements = document.getElementsByClassName('amount-debit')
     let inputDebits = []
     for (let el of debitElements) {
       inputDebits.push(el.value)
     }  
 
-    let creditElements = document.getElementsByClassName('amount_credit')
+    let creditElements = document.getElementsByClassName('amount-credit')
     let inputCredits = []
     for (let el of creditElements) {
       inputCredits.push(el.value)
@@ -103,36 +166,40 @@ class CustomForm extends React.Component {
   }
 
 
+
   render () {
-    console.log(this.state)
     return (
-      <div style={{ 
-        background: '#fff',
-        padding: 24, 
-        minHeight: 280, 
-        width: '80%', 
-        marginLeft: 'auto', 
-        marginRight: 'auto' }}
-      >
-        <Form 
-          onSubmit={this.handleFormSubmit}>
-          
-          {this.entryInputRow(this.state.availableAccounts)}
-          {this.entryInputRow(this.state.availableAccounts)}
-          {this.entryInputRow(this.state.availableAccounts)}
-          {this.entryInputRow(this.state.availableAccounts)}
 
+      <form id="journalEntryForm">
+          <table className="table">
+              <thead>
+                  <tr>
+                      <th scope="col">Account Number</th>
+                      <th scope="col">Account Name</th>
+                      <th scope="col">Debit</th>
+                      <th scope="col">Credit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {this.entryInputRow(this.state.availableAccounts)}
+                  {this.entryInputRow(this.state.availableAccounts)}
 
-          <br /> 
-          <br /> 
-          <br /> 
-          <Button htmlType="submit">
-              Submit
-          </Button>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>{this.state.sumDebits || 0}</td>
+                  <td>{this.state.sumCredits || 0}</td>
+                </tr>
+              </tfoot>
 
-        </Form>    
+          </table>
+          {/* <br/> */}
+          <p>{this.state.err}&nbsp;</p>
+          <button type="submit" onClick={this.handleFormSubmit}>Submit</button>
+      </form>
 
-      </div>
     )
   }
 }
