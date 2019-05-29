@@ -33,10 +33,11 @@ a.navbar-links {
 }
 
 table {
-  max-width: 900px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 20px;
   background-color: transparent;
-  display: table;
   border-color: grey;
 }
 thead {

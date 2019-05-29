@@ -176,7 +176,7 @@ class CustomForm extends React.Component {
     return (
 
       <form onBlur={this.handleChange} id="journalEntryForm">
-          <table className="table">
+          <table align="center" className="table">
               <thead>
                   <tr>
                       <th scope="col">Account Number</th>
