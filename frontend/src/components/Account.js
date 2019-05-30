@@ -26,7 +26,6 @@ class AccountList extends React.Component {
     }
    
     renderTable = () => {
-
         return (       
             <table align="center" className="account-listing">
                 <thead>
@@ -38,8 +37,8 @@ class AccountList extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.state.availableAccounts.map((account, i) => (
-                        <AccountRow key={i}
+                    {this.state.availableAccounts.map(account => (
+                        <AccountRow key={account.id}
                         accountName={account.account_name}
                         accountNumber={account.account_number}/>
                     ))}
@@ -54,7 +53,6 @@ class AccountList extends React.Component {
             return (
                 <div>
                     {this.renderTable()}
-                    {/* <FunFunction/> */}
                     <button type="button">+1</button>&nbsp;
                 </div>
              )

@@ -1,15 +1,15 @@
 import React from 'react';
 
-import CustomHeader from '../components/Header';
+import Header from '../components/Header';
 
-const CustomLayout = (props) => {
+const Layout = (props) => {
     return (
         <div>
-            <CustomHeader />            
+            <Header />            
                 <div style={{ padding: '0 100px', textAlign: 'center' }}>
                     {props.children}
                 </div>             
         </div>
     );
 }
- export default CustomLayout
+ export default Layout

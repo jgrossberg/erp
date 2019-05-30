@@ -1,6 +1,7 @@
 import React from 'react';
 
-const CustomHeader = () => {
+
+const Header = () => {
     return (
         <nav className="navbar">
             <div className="navbar-container">
@@ -14,4 +15,4 @@ const CustomHeader = () => {
     )
 }
 
-export default CustomHeader;
+export default Header;
