@@ -1,66 +1,47 @@
 import React from 'react';
-import axios from 'axios';
 
-import AccountRow from './AccountRow'
+const AccountRow = (props) => {
+    return (
+        <tr>
+        <td>{props.accountNumber}</td>
+        <td>{props.accountName}</td>
+        <td>$0.00</td>
+        <td>2018-05-04</td>
+    </tr>  
+    )
+}
 
+const AccountTable = (props) => {
+    return (       
+        <table align="center" className="account-listing">
+            <thead>
+                <tr>
+                    <th>Account Number</th>
+                    <th>Account Name</th>
+                    <th>Current Balance</th>
+                    <th>Last Hit On</th>
+                </tr>
+            </thead>
+            <tbody>
+                {props.data.map(account => (
+                    <AccountRow key={account.id}
+                    accountName={account.account_name}
+                    accountNumber={account.account_number}/>
+                ))}
+            </tbody>
+        </table>
+    )
+}
 
 class AccountList extends React.Component {
 
-    state = {
-        isLoading: true,
-        availableAccounts: {},
-    }
-
-    componentWillMount() {
-        axios.get(`http://127.0.0.1:8000/accounts/`)
-            .then(res=> {
-                this.setState({
-                    availableAccounts: res.data,
-                    isLoading: false,
-                    hasError: false
-                })
-            })
-            .catch(error => {
-                console.log(error)
-            });
-    }
-   
-    renderTable = () => {
-        return (       
-            <table align="center" className="account-listing">
-                <thead>
-                    <tr>
-                        <th>Account Number</th>
-                        <th>Account Name</th>
-                        <th>Current Balance</th>
-                        <th>Last Hit On</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.state.availableAccounts.map(account => (
-                        <AccountRow key={account.id}
-                        accountName={account.account_name}
-                        accountNumber={account.account_number}/>
-                    ))}
-                </tbody>
-            </table>
-        )
-    }
-
     render() {
-        const isLoading = this.state.isLoading
-        if (!isLoading) {
-            return (
-                <div>
-                    {this.renderTable()}
-                    <button type="button">+1</button>&nbsp;
-                </div>
-             )
-        } else {
-            return (
-                <div>&nbsp;</div>
-            )
-        }
+        return (
+            <div>
+                <AccountTable data={this.props.data}/>
+                <button type="button">+1</button>&nbsp;
+            </div>
+        )
     }
 }
 
