@@ -37,17 +37,29 @@ a.navbar-links {
 
 table {
   width: 100%;
+  overflow: auto; 
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 20px;
   background-color: transparent;
   border-color: grey;
+  border-spacing: 2px;
+  border-collapse: collapse;
+  box-sizing: border-box;
 }
+
+
+
 thead {
   display: table-header-group;
   vertical-align: middle;
   border-color: inherit;
 }
+
+.table-headers {
+  vertical-align: bottom;
+  line-height: 20px;
+}
+
 tr {
   display: table-row;
   vertical-align: inherit;
@@ -58,13 +70,14 @@ tbody {
   vertical-align: middle;
   border-color: inherit;
 }
-table > thead > tr > th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #ddd;
-  padding: 8px;
-  line-height: 1.42857143;
+
+tbody > tr:nth-child(odd) {
+  background-color: rgb(223, 255, 214);
 }
 
+tbody > tr:nth-child(even) {
+  background-color: rgb(173, 230, 158);
+}
 
 
 form {
@@ -91,6 +104,15 @@ input, button, select  {
   margin: 0;
 }
 
+input.table, select.table {
+  margin: 0px 0px 0px 0px;
+  border: none;
+  padding: 2px 0px 2px 2px;
+  background: transparent;
+  margin: 0;
+  width: 100%;
+}
+
 
 
 a {
@@ -101,4 +123,15 @@ a {
 
 a:hover, a:focus {
   color: #d2d2d2;
+}
+
+.total > td {
+  text-align: right;
+  font-weight: 700;
+  border: none;
+}
+
+td, th {
+  border: 1px solid rgb(120, 120, 120);
+  padding: 0 0 0 0;
 }

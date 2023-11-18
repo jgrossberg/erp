@@ -12,12 +12,12 @@ const JournalEntryRow = (props) => {
   return (
     <tr>
       <td>
-          <select className="account-select">
+          <select className="table account-select">
             {accountSelectorOptions}
           </select>
       </td>
-      <td><input className="amount-debit" /></td>
-      <td><input className="amount-credit" /></td>
+      <td><input className="table amount-debit" /></td>
+      <td><input className="table amount-credit" /></td>
     </tr>
   )
 }
@@ -50,6 +50,8 @@ class JournalEntryForm extends React.Component {
         availableAccounts: json,
     })
   }
+
+
 
   handleChange = (event) => {
     event.preventDefault();
@@ -88,7 +90,7 @@ class JournalEntryForm extends React.Component {
       <form onBlur={this.handleChange} id="journalEntryForm">
         <table align="center" className="table">
           <thead>
-            <tr>
+            <tr className="table-headers">
               <th scope="col">Account Name</th>
               <th scope="col">Debit</th>
               <th scope="col">Credit</th>
@@ -99,9 +101,10 @@ class JournalEntryForm extends React.Component {
             <JournalEntryRow availableAccounts={availableAccounts} />
             <JournalEntryRow availableAccounts={availableAccounts} />
             <JournalEntryRow availableAccounts={availableAccounts} />
+
           </tbody>
           <tfoot>
-            <tr>
+            <tr className="total">
               <td>&nbsp;</td>
               <td>{this.state.sumDebits || 0}</td>
               <td>{this.state.sumCredits || 0}</td>
