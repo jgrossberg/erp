@@ -1,7 +1,7 @@
 erp
 ======
 
-ERP tools built in python and javascript
+Basic ERPC functionality, starting with Journal Entries. Right now we are in the process of building journal entry templates and then analysis for my rental home business.
 
 
 :License: MIT
@@ -14,27 +14,19 @@ Settings
 Basic Commands
 --------------
 
-Setting Up Your Users
+Running the backend
 ^^^^^^^^^^^^^^^^^^^^^
 
-* 1
+* 1: establish a virtual environment and then install from requirements.txt
 
-* 2::
+* 2: start django
 
-    $ python manage.py code
+    $ python manage.py runserver
 
-
-Other Stuff
+Running the frontend
 ^^^^^^^^^^^
-
-Running type checks with mypy:
-
-::
-
-  $ mypy erp
-
-Test coverage
-^^^^^^^^^^^^^
+* 1: start from npm
+    $ npm start
 
 To run the tests, check your test coverage, and generate an HTML coverage report::
 
@@ -48,27 +40,3 @@ Running tests with py.test
 ::
 
   $ pytest
-
-Live reloading and Sass CSS compilation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Moved to `Live reloading and SASS compilation`_.
-
-.. _`Live reloading and SASS compilation`: http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html
-
-
-
-
-
-Deployment
-----------
-
-The following details how to deploy this application.
-
-
-Heroku
-^^^^^^
-
-
-
-
