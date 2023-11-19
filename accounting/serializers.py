@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Entry, Account
+from .models import Entry, Account, JournalEntryTemplate
 
 class EntrySerializer(serializers.ModelSerializer):
 
@@ -23,3 +23,7 @@ class AccountSerializer(serializers.ModelSerializer):
 			'account_name',
 		)
 
+class JournalEntryTemplateSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = JournalEntryTemplate
+		fields = ('accounts')

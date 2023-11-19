@@ -17,5 +17,5 @@ class Entry(models.Model):
 	amount = models.FloatField()
 	added_on = models.DateTimeField(auto_now=True)
 
-	
-
+class JournalEntryTemplate(models.Model):
+	accounts = models.JSONField(null=False)
