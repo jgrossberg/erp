@@ -7,6 +7,8 @@ from accounting import views
 router = DefaultRouter()
 router.register(r'entries', views.EntryViewSet)
 router.register(r'accounts', views.AccountViewSet)
+router.register(r'templates', views.JournalEntryTemplateViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls)),
