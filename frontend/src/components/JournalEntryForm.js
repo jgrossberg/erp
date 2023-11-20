@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 function JournalEntryRow(props) {
-  console.log(props);
   let accountSelectorOptions = [];
   if (props.availableAccounts) {
     accountSelectorOptions = Array.from(props.availableAccounts).map(
@@ -23,14 +22,27 @@ function JournalEntryRow(props) {
         </select>
       </td>
       <td>
-        <input className="table amount-debit" />
+        <input className="table amount-debit" defaultValue={props.debit} />
       </td>
       <td>
-        <input className="table amount-credit" />
+        <input className="table amount-credit" defaultValue={props.credit} />
       </td>
     </tr>
   );
 }
+
+const createRowsFromTemplate = (accountSelectorOptions, entries) => {
+  return entries.map((line) => {
+    return (
+      <JournalEntryRow
+        key={line.accountNumber}
+        availableAccounts={accountSelectorOptions}
+        debit={line.debit}
+        credit={line.credit}
+      />
+    );
+  });
+};
 
 function JournalEntryForm(props) {
   const [availableAccounts, setAvailableAccounts] = useState(null);
@@ -77,6 +89,25 @@ function JournalEntryForm(props) {
     setCredits(credits);
   };
 
+  let template = [
+    {
+      accountNumber: "1010",
+      debit: 500,
+      credit: 0,
+    },
+    {
+      accountNumber: "4010",
+      debit: 0,
+      credit: 500,
+    },
+    {
+      accountNumber: "4011",
+      debit: 0,
+      credit: 500,
+    },
+  ];
+  const journalEntryRows = createRowsFromTemplate(availableAccounts, template);
+
   return (
     <form onBlur={handleChange} id="journalEntryForm">
       <table align="center" className="table">
@@ -87,10 +118,7 @@ function JournalEntryForm(props) {
             <th scope="col">Credit</th>
           </tr>
         </thead>
-        <tbody>
-          <JournalEntryRow availableAccounts={availableAccounts} />
-          <JournalEntryRow availableAccounts={availableAccounts} />
-        </tbody>
+        <tbody>{journalEntryRows}</tbody>
         <tfoot>
           <tr className="total">
             <td>&nbsp;</td>
@@ -102,10 +130,17 @@ function JournalEntryForm(props) {
 
       <p>{error}&nbsp;</p>
 
-      {/* <button type="button" onClick={addRow}>+1</button>&nbsp;
-        <button type="submit" onClick={handleFormSubmit}>Submit</button> */}
+      {/* <button type="button" onClick={addRow}>+1</button>&nbsp; */}
+      <button type="button" onClick={handleFormSubmit}>
+        Submit
+      </button>
     </form>
   );
 }
+
+const handleFormSubmit = () => {
+  let accounts = document.getElementsByClassName("account-select");
+  console.info(accounts);
+};
 
 export default JournalEntryForm;
