@@ -2,21 +2,46 @@ import React, { useState, useEffect } from "react";
 
 import JournalEntryRow from "./JournalEntryRow";
 
-const createRowsFromTemplate = (accountSelectorOptions, entries) => {
-  return entries.map((line) => {
-    return (
+const getTransactionLines = () => {
+  const tableRows = [...document.getElementsByClassName("transaction-row")]
+  let res = tableRows.map((row) => {
+    const amount = row.getElementsByClassName("amount-debit")[0].value - row.getElementsByClassName("amount-credit")[0].value
+    return {
+      account: row.getElementsByClassName("account-select")[0].value,
+      amount: amount
+    }
+  })
+
+  return res
+}
+
+const createRowsFromTransactions = (accountSelectorOptions, transactions) => {
+  console.log("transactions: ")
+  console.log(transactions)
+  return transactions.map((txn) => {
+    if (txn.amount >= 0) {
+      return (
       <JournalEntryRow
-        key={line.accountNumber}
+        key={txn.accountNumber}
         availableAccounts={accountSelectorOptions}
-        debit={line.debit}
-        credit={line.credit}
+        debit={txn.debit}
+        credit={txn.credit}
       />
     );
-  });
+  } else {
+    return (
+      <JournalEntryRow
+        key={txn.accountNumber}
+        availableAccounts={accountSelectorOptions}
+        debit={txn.debit}
+        credit={txn.credit}
+      />)
+  }})
 };
 
 function JournalEntryForm(props) {
   const [availableAccounts, setAvailableAccounts] = useState(null);
+  const [transactions, setTransactions] = useState([])
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -25,18 +50,7 @@ function JournalEntryForm(props) {
       .then((data) => setAvailableAccounts(data));
   }, []);
 
-  const getTransactionLines = () => {
-    const tableRows = [...document.getElementsByClassName("transaction-row")]
-    let res = tableRows.map((row) => {
-      const amount = row.getElementsByClassName("amount-debit")[0].value - row.getElementsByClassName("amount-credit")[0].value
-      return {
-        account: row.getElementsByClassName("account-select")[0].value,
-        amount: amount
-      }
-    })
 
-    return res
-  }
 
   const handleChange = (event) => {
     event.preventDefault();   
@@ -44,6 +58,7 @@ function JournalEntryForm(props) {
     let transactionSum = transactions.reduce((total, txn) => {return total + txn.amount}, 0)
     let error = transactionSum === 0 ? "" : "Debits and credits must net to $0.00"
     setError(error);
+    setTransactions(transactions)
 
     console.log(transactions)
   };
@@ -65,7 +80,8 @@ function JournalEntryForm(props) {
       credit: 500,
     },
   ];
-  const journalEntryRows = createRowsFromTemplate(availableAccounts, template);
+
+  const journalEntryRows = createRowsFromTransactions(availableAccounts, template);
 
   return (
     <form onBlur={handleChange} id="journalEntryForm">
