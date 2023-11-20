@@ -30,7 +30,7 @@ class EntryViewSet(viewsets.ModelViewSet):
 
 class AccountViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
-    queryset = Account.objects.all()
+    queryset = Account.objects.all().order_by('account_number')
 
 
 class JournalEntryTemplateViewSet(viewsets.ModelViewSet):
