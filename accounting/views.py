@@ -5,13 +5,18 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
 
-from .models import Account, Entry, JournalEntryTemplate
-from .serializers import EntrySerializer, AccountSerializer, JournalEntryTemplateSerializer
+from .models import Account, JournalEntry, Entry, JournalEntryTemplate
+from .serializers import EntrySerializer, AccountSerializer, JournalEntryTemplateSerializer, JournalEntrySerializer
 
 
 
 def home(request):
     return render(request, 'main/index.html')
+
+class JournalEntryViewSet(viewsets.ModelViewSet):
+    serializer_class = JournalEntrySerializer
+    queryset = JournalEntry.objects.all()
+
 
 
 class EntryViewSet(viewsets.ModelViewSet):

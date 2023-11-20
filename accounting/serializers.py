@@ -1,9 +1,14 @@
 from rest_framework import serializers
 
-from .models import Entry, Account, JournalEntryTemplate
+from .models import JournalEntry, Entry, Account, JournalEntryTemplate
 
+
+class JournalEntrySerializer(serializers.ModelSerializer):
+	class Meta:
+		model = JournalEntry
+
+		fields = ('id', 'memo',)
 class EntrySerializer(serializers.ModelSerializer):
-
 	class Meta:
 		model = Entry
 
@@ -11,7 +16,9 @@ class EntrySerializer(serializers.ModelSerializer):
 			'id',
 			'account',
 			'amount',
-			'added_on'
+			'added_on',
+			'entry_date',
+			'journal_entry'
 		)
 
 class AccountSerializer(serializers.ModelSerializer):

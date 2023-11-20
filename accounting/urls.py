@@ -8,6 +8,8 @@ router = DefaultRouter()
 router.register(r'entries', views.EntryViewSet)
 router.register(r'accounts', views.AccountViewSet)
 router.register(r'templates', views.JournalEntryTemplateViewSet)
+router.register(r'journal-entries', views.JournalEntryViewSet)
+
 
 
 urlpatterns = [
