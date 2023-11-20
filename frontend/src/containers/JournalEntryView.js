@@ -1,14 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import JournalEntryForm from '../components/JournalEntryForm';
+import JournalEntryForm from "../components/JournalEntryForm";
 
 function JournalEntry() {
-        return (
-            <div>
-                <JournalEntryForm/>
-            </div>
-        )
+  return (
+    <div>
+      <JournalEntryForm />
+    </div>
+  );
 }
 
-export default JournalEntry
-
+export default JournalEntry;
