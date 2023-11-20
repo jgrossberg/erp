@@ -26,4 +26,4 @@ class AccountSerializer(serializers.ModelSerializer):
 class JournalEntryTemplateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = JournalEntryTemplate
-		fields = ('accounts',)
+		fields = ('name', 'accounts',)
