@@ -1,33 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 
 import AccountList from '../components/Account';
 
-class Accounts extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            accounts: [],
-            isLoading: true
-        }        
-    }
+function Accounts(props) {
+    
+    const [accounts, setAccounts] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+  
 
-    async componentDidMount()  {
-        const res = await fetch(`http://127.0.0.1:8000/accounts/`)
-        const json = await res.json()
-        this.setState({
-            accounts: json,
-            isLoading: false
-        })
-    }
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/accounts/`)
+          .then(response => response.json())
+          .then(data => {
+            setAccounts(data)
+            setIsLoading(false)
+          });
+      }, []);
 
-    render () {
-        const isLoading = this.state.isLoading
         return (
             <div>
-                {!isLoading ? <AccountList data={this.state.accounts}/> : "No data"}
+                {!isLoading ? <AccountList data={accounts}/> : "No data"}
             </div>
             )
-        }
+        
 }
 
 export default Accounts

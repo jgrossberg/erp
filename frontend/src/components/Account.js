@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AccountRow = (props) => {
+function AccountRow(props) {
     return (
         <tr>
         <td>{props.accountNumber}</td>
@@ -11,7 +11,7 @@ const AccountRow = (props) => {
     )
 }
 
-const AccountTable = (props) => {
+function AccountTable(props) {
     return (       
         <table align="center" className="account-listing">
             <thead>
@@ -33,16 +33,13 @@ const AccountTable = (props) => {
     )
 }
 
-class AccountList extends React.Component {
-
-    render() {
+function AccountList(props){
         return (
             <div>
-                <AccountTable data={this.props.data}/>
+                <AccountTable data={props.data}/>
                 <button type="button">+1</button>&nbsp;
             </div>
         )
-    }
 }
 
 export default AccountList;
