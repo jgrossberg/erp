@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
 
-from .models import Account, JournalEntry, Entry, JournalEntryTemplate
-from .serializers import EntrySerializer, AccountSerializer, JournalEntryTemplateSerializer, JournalEntrySerializer
+from .models import Account, JournalEntry, Transaction, JournalEntryTemplate
+from .serializers import TransactionSerializer, AccountSerializer, JournalEntryTemplateSerializer, JournalEntrySerializer
 
 
 
@@ -19,9 +19,9 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
 
 
 
-class EntryViewSet(viewsets.ModelViewSet):
-    serializer_class = EntrySerializer
-    queryset = Entry.objects.all()
+class TransactionViewSet(viewsets.ModelViewSet):
+    serializer_class = TransactionSerializer
+    queryset = Transaction.objects.all()
 
     def create(self, request, pk=None, company_pk=None, project_pk=None):
         is_many = isinstance(request.data, list)

@@ -15,7 +15,7 @@ class JournalEntry(models.Model):
 	def __str__(self):
 		return self.memo
 	
-class Entry(models.Model):
+class Transaction(models.Model):
 	account = models.ForeignKey(Account,
 		on_delete=models.CASCADE,
 		default = 1

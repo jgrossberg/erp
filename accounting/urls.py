@@ -5,10 +5,10 @@ from django.views.generic import TemplateView
 from accounting import views
 
 router = DefaultRouter()
-router.register(r'entries', views.EntryViewSet)
+router.register(r'transactions', views.TransactionViewSet)
 router.register(r'accounts', views.AccountViewSet)
 router.register(r'templates', views.JournalEntryTemplateViewSet)
-router.register(r'journal-entries', views.JournalEntryViewSet)
+router.register(r'entries', views.JournalEntryViewSet)
 
 
 
