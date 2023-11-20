@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const JournalEntryRow = (props) => {
-  let accountSelectorOptions = Array.from(props.availableAccounts).map(function(item) {
-    return (
-      <option key={item.account_number}>
-        {item.account_number} - {item.account_name}
-      </option>
-    )
+function JournalEntryRow(props) {
+  console.log(props)
+  let accountSelectorOptions = []
+  if (props.availableAccounts) {
+    accountSelectorOptions = Array.from(props.availableAccounts).map(function(item) {
+      return (
+        <option key={item.account_number}>
+          {item.account_number} - {item.account_name}
+        </option>
+      )
   })
+  }
 
   return (
     <tr>
@@ -22,72 +26,47 @@ const JournalEntryRow = (props) => {
   )
 }
 
-class JournalEntryForm extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-        availableAccounts: {},
-        
-        entry: {
-          accounts: ['',''],
-          debits: [0,0],
-          credits: [0,0]
-        },
-        err: '',
-        sumDebits: 0,
-        sumCredits: 0,
-        nRows: 2,
-    } 
-    this.selectorElements = document.getElementsByClassName('account-select')
-    this.debitElements = document.getElementsByClassName('amount-debit')
-    this.creditElements = document.getElementsByClassName('amount-credit')
-  }
+ function JournalEntryForm(props) {
+  const [availableAccounts, setAvailableAccounts] = useState(null);
+  const [error, setError] = useState(null);
+  const [debits, setDebits] = useState(0);
+  const [credits, setCredits] = useState(0);
+  
+  
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/accounts/`)
+      .then(response => response.json())
+      .then(data => setAvailableAccounts(data));
+  }, []);
 
-  async componentDidMount()  {
-    const res = await fetch(`http://127.0.0.1:8000/accounts/`)
-    const json = await res.json()
-    this.setState({
-        availableAccounts: json,
-    })
-  }
-
-
-
-  handleChange = (event) => {
+  const handleChange = (event) => {
     event.preventDefault();
     let inputAccounts = []
     let inputDebits = []
     let inputCredits = []
 
-    for (let el of this.selectorElements) { inputAccounts.push(el.value) }  
-    for (let el of this.debitElements) { inputDebits.push(Number(el.value)) }  
-    for (let el of this.creditElements) { inputCredits.push(Number(el.value)) }  
+    const selectorElements = document.getElementsByClassName('account-select')
+    const debitElements = document.getElementsByClassName('amount-debit')
+    const creditElements = document.getElementsByClassName('amount-credit')
+
+
+    for (let el of selectorElements) { inputAccounts.push(el.value) }  
+    for (let el of debitElements) { inputDebits.push(Number(el.value)) }  
+    for (let el of creditElements) { inputCredits.push(Number(el.value)) }  
     
     function getSum(total, num) {return total + num}
-    var sumDebits = inputDebits.reduce(getSum)
-    var sumCredits = inputCredits.reduce(getSum)
-    let err = (sumDebits === sumCredits ? '' : 'Debits and credits must net to $0.00')
+    var debits = inputDebits.reduce(getSum)
+    var credits = inputCredits.reduce(getSum)
+    let error = (debits === credits ? '' : 'Debits and credits must net to $0.00')
 
-    this.setState({
-      entry: {
-        'accounts' : inputAccounts,
-        'debits' : inputDebits,
-        'credits' : inputCredits
-      },
-      sumDebits : inputDebits.reduce(getSum),
-      sumCredits : inputCredits.reduce(getSum),
-      err: err
-    });
+    setError(error)
+    setDebits(debits)
+    setCredits(credits)
+    
   }
 
-  handleFormSubmit = async (event) => {
-    event.preventDefault();
-  }
-
-  render () {
-    const availableAccounts = this.state.availableAccounts
-    return (
-      <form onBlur={this.handleChange} id="journalEntryForm">
+  return ( 
+    <form onBlur={handleChange} id="journalEntryForm">
         <table align="center" className="table">
           <thead>
             <tr className="table-headers">
@@ -99,26 +78,22 @@ class JournalEntryForm extends React.Component {
           <tbody>
             <JournalEntryRow availableAccounts={availableAccounts} />
             <JournalEntryRow availableAccounts={availableAccounts} />
-            <JournalEntryRow availableAccounts={availableAccounts} />
-            <JournalEntryRow availableAccounts={availableAccounts} />
-
+            
           </tbody>
           <tfoot>
             <tr className="total">
               <td>&nbsp;</td>
-              <td>{this.state.sumDebits || 0}</td>
-              <td>{this.state.sumCredits || 0}</td>
+              <td>{debits || 0}</td>
+              <td>{credits || 0}</td>
             </tr>
           </tfoot>
         </table>
 
-        <p>{this.state.err}&nbsp;</p>
+        <p>{error}&nbsp;</p>
 
-        <button type="button" onClick={this.addRow}>+1</button>&nbsp;
-        <button type="submit" onClick={this.handleFormSubmit}>Submit</button>
-      </form>
-    )
-  }
+        {/* <button type="button" onClick={addRow}>+1</button>&nbsp;
+        <button type="submit" onClick={handleFormSubmit}>Submit</button> */}
+      </form>)
 }
 
 export default JournalEntryForm

@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const Header = () => {
+function Header() {
     return (
         <nav className="navbar">
             <div className="navbar-container">
