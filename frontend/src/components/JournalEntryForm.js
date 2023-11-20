@@ -1,35 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function JournalEntryRow(props) {
-  let accountSelectorOptions = [];
-  if (props.availableAccounts) {
-    accountSelectorOptions = Array.from(props.availableAccounts).map(
-      function (item) {
-        return (
-          <option key={item.account_number}>
-            {item.account_number} - {item.account_name}
-          </option>
-        );
-      },
-    );
-  }
-
-  return (
-    <tr>
-      <td>
-        <select className="table account-select">
-          {accountSelectorOptions}
-        </select>
-      </td>
-      <td>
-        <input className="table amount-debit" defaultValue={props.debit} />
-      </td>
-      <td>
-        <input className="table amount-credit" defaultValue={props.credit} />
-      </td>
-    </tr>
-  );
-}
+import JournalEntryRow from "./JournalEntryRow";
 
 const createRowsFromTemplate = (accountSelectorOptions, entries) => {
   return entries.map((line) => {
@@ -47,8 +18,6 @@ const createRowsFromTemplate = (accountSelectorOptions, entries) => {
 function JournalEntryForm(props) {
   const [availableAccounts, setAvailableAccounts] = useState(null);
   const [error, setError] = useState(null);
-  const [debits, setDebits] = useState(0);
-  const [credits, setCredits] = useState(0);
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/accounts/`)
@@ -56,37 +25,27 @@ function JournalEntryForm(props) {
       .then((data) => setAvailableAccounts(data));
   }, []);
 
+  const getTransactionLines = () => {
+    const tableRows = [...document.getElementsByClassName("transaction-row")]
+    let res = tableRows.map((row) => {
+      const amount = row.getElementsByClassName("amount-debit")[0].value - row.getElementsByClassName("amount-credit")[0].value
+      return {
+        account: row.getElementsByClassName("account-select")[0].value,
+        amount: amount
+      }
+    })
+
+    return res
+  }
+
   const handleChange = (event) => {
-    event.preventDefault();
-    let inputAccounts = [];
-    let inputDebits = [];
-    let inputCredits = [];
-
-    const selectorElements = document.getElementsByClassName("account-select");
-    const debitElements = document.getElementsByClassName("amount-debit");
-    const creditElements = document.getElementsByClassName("amount-credit");
-
-    for (let el of selectorElements) {
-      inputAccounts.push(el.value);
-    }
-    for (let el of debitElements) {
-      inputDebits.push(Number(el.value));
-    }
-    for (let el of creditElements) {
-      inputCredits.push(Number(el.value));
-    }
-
-    function getSum(total, num) {
-      return total + num;
-    }
-    var debits = inputDebits.reduce(getSum);
-    var credits = inputCredits.reduce(getSum);
-    let error =
-      debits === credits ? "" : "Debits and credits must net to $0.00";
-
+    event.preventDefault();   
+    let transactions = getTransactionLines()
+    let transactionSum = transactions.reduce((total, txn) => {return total + txn.amount}, 0)
+    let error = transactionSum === 0 ? "" : "Debits and credits must net to $0.00"
     setError(error);
-    setDebits(debits);
-    setCredits(credits);
+
+    console.log(transactions)
   };
 
   let template = [
@@ -110,6 +69,12 @@ function JournalEntryForm(props) {
 
   return (
     <form onBlur={handleChange} id="journalEntryForm">
+      <label htmlFor="memo"> Memo:</label>
+      <input id="memo" type="text" /><br/><br/>
+
+      <label htmlFor="date">Date</label>
+      <input id="date" type="date" />
+      <br/><br/>
       <table align="center" className="table">
         <thead>
           <tr className="table-headers">
@@ -119,13 +84,6 @@ function JournalEntryForm(props) {
           </tr>
         </thead>
         <tbody>{journalEntryRows}</tbody>
-        <tfoot>
-          <tr className="total">
-            <td>&nbsp;</td>
-            <td>{debits || 0}</td>
-            <td>{credits || 0}</td>
-          </tr>
-        </tfoot>
       </table>
 
       <p>{error}&nbsp;</p>
