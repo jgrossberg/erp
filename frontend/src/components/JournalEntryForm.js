@@ -16,8 +16,6 @@ const getTransactionLines = () => {
 }
 
 const createRowsFromTransactions = (accountSelectorOptions, transactions) => {
-  console.log("transactions: ")
-  console.log(transactions)
   return transactions.map((txn) => {
     if (txn.amount >= 0) {
       return (
@@ -52,6 +50,10 @@ function JournalEntryForm(props) {
 
 
 
+  const handleFormSubmit = () => {
+    console.info(transactions);
+  };
+
   const handleChange = (event) => {
     event.preventDefault();   
     let transactions = getTransactionLines()
@@ -59,8 +61,6 @@ function JournalEntryForm(props) {
     let error = transactionSum === 0 ? "" : "Debits and credits must net to $0.00"
     setError(error);
     setTransactions(transactions)
-
-    console.log(transactions)
   };
 
   let template = [
@@ -112,9 +112,5 @@ function JournalEntryForm(props) {
   );
 }
 
-const handleFormSubmit = () => {
-  let accounts = document.getElementsByClassName("account-select");
-  console.info(accounts);
-};
 
 export default JournalEntryForm;

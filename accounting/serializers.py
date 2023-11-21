@@ -11,7 +11,7 @@ class JournalEntrySerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Transaction
-
+		depth = 1
 		fields = (
 			'id',
 			'account',
