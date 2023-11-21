@@ -17,8 +17,6 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
     serializer_class = JournalEntrySerializer
     queryset = JournalEntry.objects.all()
 
-
-
 class TransactionViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
     queryset = Transaction.objects.all()

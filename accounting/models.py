@@ -23,7 +23,7 @@ class Transaction(models.Model):
 	amount = models.FloatField()
 	added_on = models.DateTimeField(auto_now=True)
 	entry_date = models.DateField(auto_now=False)
-	journal_entry = models.ForeignKey(JournalEntry, on_delete=models.CASCADE, null=True)
+	journal_entry = models.ForeignKey(JournalEntry, related_name='transactions', on_delete=models.CASCADE, null=True)
 
 
 	def __str__(self):
