@@ -5,9 +5,10 @@ import JournalEntryRow from "./JournalEntryRow";
 const getTransactionLines = () => {
   const tableRows = [...document.getElementsByClassName("transaction-row")]
   let res = tableRows.map((row) => {
+    const account = row.getElementsByClassName("account-select")[0].selectedOptions[0].value
     const amount = row.getElementsByClassName("amount-debit")[0].value - row.getElementsByClassName("amount-credit")[0].value
     return {
-      account: row.getElementsByClassName("account-select")[0].value,
+      account: account,
       amount: amount
     }
   })
@@ -51,7 +52,20 @@ function JournalEntryForm(props) {
 
 
   const handleFormSubmit = () => {
-    console.info(transactions);
+    const date = document.getElementsByClassName("date-input")[0].value
+    const memo = document.getElementsByClassName("memo-input")[0].value
+    const datedTransactions = transactions.map((txn) =>  {
+      txn['entry_date'] = date
+      return {
+        txn 
+      }
+    })
+
+    
+    console.info({
+      "memo" : memo,
+      "transactions": datedTransactions
+    });
   };
 
   const handleChange = (event) => {
@@ -73,12 +87,7 @@ function JournalEntryForm(props) {
       accountNumber: "4010",
       debit: 0,
       credit: 500,
-    },
-    {
-      accountNumber: "4011",
-      debit: 0,
-      credit: 500,
-    },
+    }
   ];
 
   const journalEntryRows = createRowsFromTransactions(availableAccounts, template);
@@ -86,10 +95,10 @@ function JournalEntryForm(props) {
   return (
     <form onBlur={handleChange} id="journalEntryForm">
       <label htmlFor="memo"> Memo:</label>
-      <input id="memo" type="text" /><br/><br/>
+      <input id="memo" className="memo-input" type="text" /><br/><br/>
 
       <label htmlFor="date">Date</label>
-      <input id="date" type="date" />
+      <input id="date" className="date-input" type="date" />
       <br/><br/>
       <table align="center" className="table">
         <thead>

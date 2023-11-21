@@ -6,7 +6,7 @@ function JournalEntryRow(props) {
     accountSelectorOptions = Array.from(props.availableAccounts).map(
       function (item) {
         return (
-          <option key={item.account_number}>
+          <option key={item.id} value={item.id}>
             {item.account_number} - {item.account_name}
           </option>
         );
