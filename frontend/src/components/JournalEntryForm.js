@@ -21,7 +21,7 @@ const createRowsFromTransactions = (accountSelectorOptions, transactions) => {
     if (txn.amount >= 0) {
       return (
       <JournalEntryRow
-        key={txn.accountNumber}
+        key={txn.key}
         availableAccounts={accountSelectorOptions}
         debit={txn.debit}
         credit={txn.credit}
@@ -30,7 +30,7 @@ const createRowsFromTransactions = (accountSelectorOptions, transactions) => {
   } else {
     return (
       <JournalEntryRow
-        key={txn.accountNumber}
+        key={txn.key}
         availableAccounts={accountSelectorOptions}
         debit={txn.debit}
         credit={txn.credit}
@@ -47,6 +47,22 @@ function JournalEntryForm(props) {
     fetch(`http://127.0.0.1:8000/accounts/`)
       .then((response) => response.json())
       .then((data) => setAvailableAccounts(data));
+
+      setTransactions([
+        {
+          accountNumber: "1010",
+          debit: 500,
+          credit: 0,
+          key: 1
+        },
+        {
+          accountNumber: "4010",
+          debit: 0,
+          credit: 500,
+          key: 2
+        }
+      ]);
+    
   }, []);
 
 
@@ -68,6 +84,14 @@ function JournalEntryForm(props) {
     });
   };
 
+  const addRow = () => {
+    let transactions = getTransactionLines()
+    const newKey = transactions.length
+    transactions = transactions.concat({account: '1001', amount: 0, key: newKey})
+    console.log(transactions)
+    setTransactions(transactions)
+  }
+
   const handleChange = (event) => {
     event.preventDefault();   
     let transactions = getTransactionLines()
@@ -77,20 +101,8 @@ function JournalEntryForm(props) {
     setTransactions(transactions)
   };
 
-  let template = [
-    {
-      accountNumber: "1010",
-      debit: 500,
-      credit: 0,
-    },
-    {
-      accountNumber: "4010",
-      debit: 0,
-      credit: 500,
-    }
-  ];
 
-  const journalEntryRows = createRowsFromTransactions(availableAccounts, template);
+  const journalEntryRows = createRowsFromTransactions(availableAccounts, transactions);
 
   return (
     <form onBlur={handleChange} id="journalEntryForm">
@@ -113,7 +125,7 @@ function JournalEntryForm(props) {
 
       <p>{error}&nbsp;</p>
 
-      {/* <button type="button" onClick={addRow}>+1</button>&nbsp; */}
+      <button type="button" onClick={addRow}>+1</button>&nbsp;
       <button type="button" onClick={handleFormSubmit}>
         Submit
       </button>
