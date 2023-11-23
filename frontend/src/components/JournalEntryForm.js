@@ -16,26 +16,16 @@ const getTransactionLines = () => {
   return res
 }
 
-const createRowsFromTransactions = (accountSelectorOptions, transactions) => {
-  return transactions.map((txn) => {
-    if (txn.amount >= 0) {
-      return (
+const createRowsFromLegs = (accountSelectorOptions, legs) => {
+  return legs.map((leg, index) => 
       <JournalEntryRow
-        key={txn.key}
+        key={index}
+        accountId={leg.accountId}
         availableAccounts={accountSelectorOptions}
-        debit={txn.debit}
-        credit={txn.credit}
+        debit={leg.amount > 0 ? leg.amount : 0}
+        credit={leg.amount < 0 ? leg.amount : 0}
       />
-    );
-  } else {
-    return (
-      <JournalEntryRow
-        key={txn.key}
-        availableAccounts={accountSelectorOptions}
-        debit={txn.debit}
-        credit={txn.credit}
-      />)
-  }})
+  )
 };
 
 function JournalEntryForm(props) {
@@ -64,8 +54,6 @@ function JournalEntryForm(props) {
       ]);
     
   }, []);
-
-
 
   const handleFormSubmit = () => {
     const date = document.getElementsByClassName("date-input")[0].value
@@ -102,7 +90,8 @@ function JournalEntryForm(props) {
   };
 
 
-  const journalEntryRows = createRowsFromTransactions(availableAccounts, transactions);
+  // const journalEntryRows = createRowsFromTransactions(availableAccounts, transactions);
+  const journalEntryRows = createRowsFromLegs(availableAccounts, props.legs);
 
   return (
     <form onBlur={handleChange} id="journalEntryForm">

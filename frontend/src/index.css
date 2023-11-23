@@ -9,8 +9,8 @@ body {
 div.navbar-container {
   padding-right: 15px;
   padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+  /* margin-right: auto;
+  margin-left: auto; */
   display: block;
   box-sizing: border-box;
 }
@@ -39,10 +39,10 @@ a.navbar-links {
 }
 
 table {
-  width: 100%;
+  /* width: 100%; */
   overflow: auto;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
   background-color: transparent;
   border-color: grey;
   border-spacing: 2px;
@@ -85,6 +85,12 @@ form {
   margin-top: 0em;
 }
 
+.template-selector {
+  text-align: left;
+  margin-top: 5rem;
+  margin-bottom: 2rem;
+}
+
 button {
   background-color: buttonface;
   text-shadow: none;
@@ -109,7 +115,6 @@ select.table {
   border: none;
   padding: 2px 0px 2px 2px;
   background: transparent;
-  margin: 0;
   width: 100%;
 }
 
