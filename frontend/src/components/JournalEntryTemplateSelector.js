@@ -1,12 +1,13 @@
 import React from "react";
 
 
-const JournalEntryTemplateSelector = (props) => {
+const JournalEntryTemplateSelector = ({setTemplate, templates}) => {
     const handleTemplateSelect = (event) => {
         console.log(event.target)
+        setTemplate(event.target.value)
     }
 
-    let templates = Array.from(props.templates).map(item => {
+    let templateOptions = Array.from(templates).map(item => {
         return (
           <option key={item.name}>
             {item.name}
@@ -17,7 +18,7 @@ const JournalEntryTemplateSelector = (props) => {
     return (
         <div>
             <select className="template-selector" onChange={handleTemplateSelect}>
-                {templates}
+                {templateOptions}
             </select>
         </div>
     )
