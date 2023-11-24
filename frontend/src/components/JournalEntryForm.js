@@ -20,8 +20,10 @@ const getTransactionLines = () => {
 };
 
 const createRowsFromLegs = (accountSelectorOptions, legs) => {
-  return legs.map((leg, index) => (
-    <JournalEntryRow
+  // legs.map(leg => console.log(leg.amount))
+  return legs.sort((leg1, leg2) => (leg1.amount < leg2.amount) ? 1 : (leg1.amount > leg2.amount) ? -1 : 0)
+    .map((leg, index) => (
+      <JournalEntryRow
       key={index}
       accountId={leg.accountId}
       availableAccounts={accountSelectorOptions}
@@ -41,21 +43,6 @@ function JournalEntryForm(props) {
     fetch(`http://127.0.0.1:8000/accounts/`)
       .then((response) => response.json())
       .then((data) => setAvailableAccounts(data));
-
-    setTransactions([
-      {
-        accountNumber: "1010",
-        debit: 500,
-        credit: 0,
-        key: 1,
-      },
-      {
-        accountNumber: "4010",
-        debit: 0,
-        credit: 500,
-        key: 2,
-      },
-    ]);
   }, []);
 
   const handleFormSubmit = () => {

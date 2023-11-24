@@ -24,9 +24,8 @@ function JournalEntry() {
 
   const matchingTemplate = templates.filter((fetchedTemplate) => fetchedTemplate.name === template)[0];
 
-  let legs
+  let legs;
   if (matchingTemplate && matchingTemplate.accounts && matchingTemplate.accounts.length > 0) {
-    console.log('we matched a templates? '  + matchingTemplate.accounts)
     legs = matchingTemplate.accounts
   } else {
     legs = [

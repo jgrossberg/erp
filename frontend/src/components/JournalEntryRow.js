@@ -38,7 +38,7 @@ function JournalEntryRow(props) {
           className="table amount-debit"
           type="number"
           step=".01"
-          defaultValue={props.debit}
+          value={props.debit}
         />
       </td>
       <td>
@@ -46,7 +46,7 @@ function JournalEntryRow(props) {
           className="table amount-credit"
           type="number"
           step=".01"
-          defaultValue={-1 * props.credit}
+          value={-1 * props.credit}
         />
       </td>
     </tr>
