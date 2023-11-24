@@ -13,15 +13,12 @@ function JournalEntryRow(props) {
             {item.account_number} - {item.account_name}
           </option>
         );
-
-        // }
       },
     );
   } else {
     accountSelectorOptions = <option key={0}></option>;
   }
 
-  console.log("i am a row with account select value of: " + props.accountId);
   return (
     <tr className="transaction-row">
       <td>

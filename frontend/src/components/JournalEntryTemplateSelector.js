@@ -2,7 +2,6 @@ import React from "react";
 
 const JournalEntryTemplateSelector = ({ onChange, templates }) => {
   const handleTemplateSelect = (event) => {
-    console.log(event.target);
     onChange(event.target.value);
   };
 

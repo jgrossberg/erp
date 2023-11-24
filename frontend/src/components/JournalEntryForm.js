@@ -20,7 +20,6 @@ const getTransactionLines = () => {
 };
 
 const createRowsFromLegs = (accountSelectorOptions, legs) => {
-  // legs.map(leg => console.log(leg.amount))
   return legs
     .sort((leg1, leg2) =>
       leg1.amount < leg2.amount ? 1 : leg1.amount > leg2.amount ? -1 : 0,
@@ -71,7 +70,6 @@ function JournalEntryForm(props) {
       amount: 0,
       key: newKey,
     });
-    console.log(transactions);
     setTransactions(transactions);
   };
 

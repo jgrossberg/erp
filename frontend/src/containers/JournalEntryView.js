@@ -3,11 +3,6 @@ import React, { useState, useEffect } from "react";
 import JournalEntryForm from "../components/JournalEntryForm";
 import JournalEntryTemplateSelector from "../components/JournalEntryTemplateSelector";
 
-const makeLegsFromTemplate = (accounts) => {
-  console.log("a tmeple has been selected -view");
-  console.log("the template is " + accounts);
-};
-
 function JournalEntry() {
   const [templates, setTemplates] = useState([]);
   const [template, setTemplate] = useState("");
@@ -18,9 +13,6 @@ function JournalEntry() {
       .then((data) => setTemplates(data));
   }, []);
 
-  if (template.length > 0) {
-    makeLegsFromTemplate(template);
-  }
 
   const matchingTemplate = templates.filter(
     (fetchedTemplate) => fetchedTemplate.name === template,
