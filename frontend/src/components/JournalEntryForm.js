@@ -21,23 +21,25 @@ const getTransactionLines = () => {
 
 const createRowsFromLegs = (accountSelectorOptions, legs) => {
   // legs.map(leg => console.log(leg.amount))
-  return legs.sort((leg1, leg2) => (leg1.amount < leg2.amount) ? 1 : (leg1.amount > leg2.amount) ? -1 : 0)
+  return legs
+    .sort((leg1, leg2) =>
+      leg1.amount < leg2.amount ? 1 : leg1.amount > leg2.amount ? -1 : 0,
+    )
     .map((leg, index) => (
       <JournalEntryRow
-      key={index}
-      accountId={leg.accountId}
-      availableAccounts={accountSelectorOptions}
-      debit={leg.amount > 0 ? leg.amount : 0}
-      credit={leg.amount < 0 ? leg.amount : 0}
-    />
-  ));
+        key={index}
+        accountId={leg.accountId}
+        availableAccounts={accountSelectorOptions}
+        debit={leg.amount > 0 ? leg.amount : 0}
+        credit={leg.amount < 0 ? leg.amount : 0}
+      />
+    ));
 };
 
 function JournalEntryForm(props) {
   const [availableAccounts, setAvailableAccounts] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/accounts/`)

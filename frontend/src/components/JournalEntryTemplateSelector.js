@@ -7,7 +7,11 @@ const JournalEntryTemplateSelector = ({ onChange, templates }) => {
   };
 
   let templateOptions = Array.from(templates).map((item) => {
-    return <option key={item.name} value={item.id}>{item.name}</option>;
+    return (
+      <option key={item.name} value={item.id}>
+        {item.name}
+      </option>
+    );
   });
 
   return (

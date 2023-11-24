@@ -4,9 +4,9 @@ import JournalEntryForm from "../components/JournalEntryForm";
 import JournalEntryTemplateSelector from "../components/JournalEntryTemplateSelector";
 
 const makeLegsFromTemplate = (accounts) => {
-  console.log("a tmeple has been selected -view")
-  console.log("the template is " + accounts)
-}
+  console.log("a tmeple has been selected -view");
+  console.log("the template is " + accounts);
+};
 
 function JournalEntry() {
   const [templates, setTemplates] = useState([]);
@@ -19,14 +19,20 @@ function JournalEntry() {
   }, []);
 
   if (template.length > 0) {
-    makeLegsFromTemplate(template)
+    makeLegsFromTemplate(template);
   }
 
-  const matchingTemplate = templates.filter((fetchedTemplate) => fetchedTemplate.name === template)[0];
+  const matchingTemplate = templates.filter(
+    (fetchedTemplate) => fetchedTemplate.name === template,
+  )[0];
 
   let legs;
-  if (matchingTemplate && matchingTemplate.accounts && matchingTemplate.accounts.length > 0) {
-    legs = matchingTemplate.accounts
+  if (
+    matchingTemplate &&
+    matchingTemplate.accounts &&
+    matchingTemplate.accounts.length > 0
+  ) {
+    legs = matchingTemplate.accounts;
   } else {
     legs = [
       {
@@ -38,7 +44,7 @@ function JournalEntry() {
         amount: 0,
       },
     ];
-  } 
+  }
 
   return (
     <div>
