@@ -36,7 +36,6 @@ function JournalEntryForm(props) {
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
 
-  console.log("the template is: " + props.template);
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/accounts/`)

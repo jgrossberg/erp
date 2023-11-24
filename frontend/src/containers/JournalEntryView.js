@@ -3,6 +3,11 @@ import React, { useState, useEffect } from "react";
 import JournalEntryForm from "../components/JournalEntryForm";
 import JournalEntryTemplateSelector from "../components/JournalEntryTemplateSelector";
 
+const makeLegsFromTemplate = (accounts) => {
+  console.log("a tmeple has been selected -view")
+  console.log("the template is " + accounts)
+}
+
 function JournalEntry() {
   const [templates, setTemplates] = useState([]);
   const [template, setTemplate] = useState("");
@@ -13,9 +18,16 @@ function JournalEntry() {
       .then((data) => setTemplates(data));
   }, []);
 
-  let legs;
-  if (templates.length > 0) {
-    legs = templates[0].accounts;
+  if (template.length > 0) {
+    makeLegsFromTemplate(template)
+  }
+
+  const matchingTemplate = templates.filter((fetchedTemplate) => fetchedTemplate.name === template)[0];
+
+  let legs
+  if (matchingTemplate && matchingTemplate.accounts && matchingTemplate.accounts.length > 0) {
+    console.log('we matched a templates? '  + matchingTemplate.accounts)
+    legs = matchingTemplate.accounts
   } else {
     legs = [
       {
@@ -27,15 +39,16 @@ function JournalEntry() {
         amount: 0,
       },
     ];
-  }
+  } 
 
   return (
     <div>
       <JournalEntryTemplateSelector
-        setTemplate={setTemplate}
+        onChange={setTemplate}
         templates={templates}
       />
-      <JournalEntryForm legs={legs} template={template} />
+      {/* <JournalEntryForm legs={legs} template={template} /> */}
+      <JournalEntryForm legs={legs} />
     </div>
   );
 }

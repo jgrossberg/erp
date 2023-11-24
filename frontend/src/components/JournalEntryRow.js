@@ -21,6 +21,7 @@ function JournalEntryRow(props) {
     accountSelectorOptions = <option key={0}></option>;
   }
 
+  console.log('i am a row with account select value of: ' + props.accountId)
   return (
     <tr className="transaction-row">
       <td>
