@@ -1,12 +1,11 @@
 import React from "react";
 
-function JournalEntryRow(props) {
-  const doNothing = () => {};
 
+function JournalEntryRow({ handleInputChange, accountId, availableAccounts, debit, credit}) {
   let accountSelectorOptions;
 
-  if (props.availableAccounts) {
-    accountSelectorOptions = Array.from(props.availableAccounts).map(
+  if (availableAccounts) {
+    accountSelectorOptions = Array.from(availableAccounts).map(
       function (item, index) {
         return (
           <option key={index} value={item.id}>
@@ -23,8 +22,8 @@ function JournalEntryRow(props) {
     <tr className="transaction-row">
       <td>
         <select
-          value={props.accountId}
-          onChange={doNothing}
+          value={accountId}
+          onChange={handleInputChange}
           className="table account-select"
         >
           {accountSelectorOptions}
@@ -35,7 +34,8 @@ function JournalEntryRow(props) {
           className="table amount-debit"
           type="number"
           step=".01"
-          value={props.debit}
+          value={debit}
+          onChange={handleInputChange}
         />
       </td>
       <td>
@@ -43,7 +43,8 @@ function JournalEntryRow(props) {
           className="table amount-credit"
           type="number"
           step=".01"
-          value={-1 * props.credit}
+          value={-1 * credit}
+          onChange={handleInputChange}
         />
       </td>
     </tr>

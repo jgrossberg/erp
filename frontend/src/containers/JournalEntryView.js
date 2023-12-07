@@ -3,51 +3,57 @@ import React, { useState, useEffect } from "react";
 import JournalEntryForm from "../components/JournalEntryForm";
 import JournalEntryTemplateSelector from "../components/JournalEntryTemplateSelector";
 
+const defaultTransactions = () => {
+  return [
+    {
+      account: "1001",
+      accountId: 1001,
+      amount: 10,
+    },
+    {
+      account: "1002",
+      accountId: 1002,
+      amount: -10,
+    },
+  ];
+}
+
 function JournalEntry() {
-  const [templates, setTemplates] = useState([]);
-  const [template, setTemplate] = useState("");
+  const [availableTemplates, setAvailableTemplates] = useState([]);
+  const [transactions, setTransactions] = useState(defaultTransactions())
+
+  const handleTemplateSelect = (selectedTemplateName) => {
+    console.info('template selected: ' + selectedTemplateName);
+    const matchingTemplate = availableTemplates.filter((template) => template.name === selectedTemplateName)[0];
+    if (
+      matchingTemplate &&
+      matchingTemplate.accounts &&
+      matchingTemplate.accounts.length > 0
+    ) {
+      let legs = matchingTemplate.accounts;
+      console.log("template match found, legs: " + JSON.stringify(legs))
+      setTransactions(legs)
+
+  
+  }}
+
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/templates/`)
       .then((response) => response.json())
-      .then((data) => setTemplates(data));
+      .then((data) => setAvailableTemplates(data));
   }, []);
-
-
-  const matchingTemplate = templates.filter(
-    (fetchedTemplate) => fetchedTemplate.name === template,
-  )[0];
-
-  let legs;
-  if (
-    matchingTemplate &&
-    matchingTemplate.accounts &&
-    matchingTemplate.accounts.length > 0
-  ) {
-    legs = matchingTemplate.accounts;
-  } else {
-    legs = [
-      {
-        accountId: 1001,
-        amount: 0,
-      },
-      {
-        accountId: 1001,
-        amount: 0,
-      },
-    ];
-  }
 
   return (
     <div>
       <JournalEntryTemplateSelector
-        onChange={setTemplate}
-        templates={templates}
+        onChange={handleTemplateSelect}
+        templates={availableTemplates}
       />
-      {/* <JournalEntryForm legs={legs} template={template} /> */}
-      <JournalEntryForm legs={legs} />
+      <JournalEntryForm legs={transactions} transactions={transactions} onChange={setTransactions} />
     </div>
   );
 }
+
 
 export default JournalEntry;

@@ -19,32 +19,18 @@ const getTransactionLines = () => {
   return res;
 };
 
-const createRowsFromLegs = (accountSelectorOptions, legs) => {
-  return legs
-    .sort((leg1, leg2) =>
-      leg1.amount < leg2.amount ? 1 : leg1.amount > leg2.amount ? -1 : 0,
-    )
-    .map((leg, index) => (
-      <JournalEntryRow
-        key={index}
-        accountId={leg.accountId}
-        availableAccounts={accountSelectorOptions}
-        debit={leg.amount > 0 ? leg.amount : 0}
-        credit={leg.amount < 0 ? leg.amount : 0}
-      />
-    ));
-};
-
-function JournalEntryForm(props) {
+function JournalEntryForm({transactions, onChange}) {
   const [availableAccounts, setAvailableAccounts] = useState(null);
-  const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/accounts/`)
-      .then((response) => response.json())
-      .then((data) => setAvailableAccounts(data));
+    .then((response) => response.json())
+    .then((data) => {
+      setAvailableAccounts(data);
+    })
   }, []);
+
 
   const handleFormSubmit = () => {
     const date = document.getElementsByClassName("date-input")[0].value;
@@ -56,11 +42,31 @@ function JournalEntryForm(props) {
       };
     });
 
-    console.info({
-      memo: memo,
-      transactions: datedTransactions,
-    });
+    console.log(date,  memo,  datedTransactions);
   };
+
+  const createRowsFromLegs = (accountSelectorOptions, legs) => {
+    console.log('creating rows from the transaction legs: ' + JSON.stringify(legs))
+    return legs
+      .sort((leg1, leg2) =>
+        leg1.amount < leg2.amount ? 1 : leg1.amount > leg2.amount ? -1 : 0,
+      )
+      .map((leg, index) => (
+        <JournalEntryRow
+          key={index}
+          accountId={leg.accountId}
+          availableAccounts={accountSelectorOptions}
+          debit={leg.amount > 0 ? leg.amount : 0}
+          credit={leg.amount < 0 ? leg.amount : 0}
+          handleInputChange={handleTransactionsChange}
+        />
+      ));
+  };
+
+  const handleTransactionsChange = () => {
+    let transactions = getTransactionLines();
+    onChange(transactions)
+  }
 
   const addRow = () => {
     let transactions = getTransactionLines();
@@ -70,11 +76,10 @@ function JournalEntryForm(props) {
       amount: 0,
       key: newKey,
     });
-    setTransactions(transactions);
+    onChange(transactions);
   };
 
-  const handleChange = (event) => {
-    event.preventDefault();
+  const handleChange = () => {
     let transactions = getTransactionLines();
     let transactionSum = transactions.reduce((total, txn) => {
       return total + txn.amount;
@@ -82,11 +87,10 @@ function JournalEntryForm(props) {
     let error =
       transactionSum === 0 ? "" : "Debits and credits must net to $0.00";
     setError(error);
-    setTransactions(transactions);
+    onChange(transactions);
   };
 
-  // const journalEntryRows = createRowsFromTransactions(availableAccounts, transactions);
-  const journalEntryRows = createRowsFromLegs(availableAccounts, props.legs);
+  const journalEntryRows = createRowsFromLegs(availableAccounts, transactions);
 
   return (
     <form onBlur={handleChange} id="journalEntryForm">
