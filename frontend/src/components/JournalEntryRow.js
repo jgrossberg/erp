@@ -1,7 +1,12 @@
 import React from "react";
 
-
-function JournalEntryRow({ handleInputChange, accountId, availableAccounts, debit, credit}) {
+function JournalEntryRow({
+  handleInputChange,
+  accountId,
+  availableAccounts,
+  debit,
+  credit,
+}) {
   let accountSelectorOptions;
 
   if (availableAccounts) {

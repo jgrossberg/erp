@@ -19,18 +19,17 @@ const getTransactionLines = () => {
   return res;
 };
 
-function JournalEntryForm({transactions, onChange}) {
+function JournalEntryForm({ transactions, onChange }) {
   const [availableAccounts, setAvailableAccounts] = useState(null);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/accounts/`)
-    .then((response) => response.json())
-    .then((data) => {
-      setAvailableAccounts(data);
-    })
+      .then((response) => response.json())
+      .then((data) => {
+        setAvailableAccounts(data);
+      });
   }, []);
-
 
   const handleFormSubmit = () => {
     const date = document.getElementsByClassName("date-input")[0].value;
@@ -42,11 +41,13 @@ function JournalEntryForm({transactions, onChange}) {
       };
     });
 
-    console.log(date,  memo,  datedTransactions);
+    console.log(date, memo, datedTransactions);
   };
 
   const createRowsFromLegs = (accountSelectorOptions, legs) => {
-    console.log('creating rows from the transaction legs: ' + JSON.stringify(legs))
+    console.log(
+      "creating rows from the transaction legs: " + JSON.stringify(legs),
+    );
     return legs
       .sort((leg1, leg2) =>
         leg1.amount < leg2.amount ? 1 : leg1.amount > leg2.amount ? -1 : 0,
@@ -65,8 +66,8 @@ function JournalEntryForm({transactions, onChange}) {
 
   const handleTransactionsChange = () => {
     let transactions = getTransactionLines();
-    onChange(transactions)
-  }
+    onChange(transactions);
+  };
 
   const addRow = () => {
     let transactions = getTransactionLines();
